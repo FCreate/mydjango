@@ -1,0 +1,275 @@
+{% extends 'myapp/index.html' %}
+
+
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<br>
+<br>
+<br>
+
+<form id="mycatalog" >
+            <input id="left" type="button" class="btn btn-primary btn-lg" value="Left">
+            <input id="right" type="button" class="btn btn-primary btn-lg" value="Right">
+            <input id="page" type="text" name="page">
+            <input type="submit" class="btn btn-primary btn-lg" value="Number of page">
+</form>
+
+<script>
+    number_page=1;
+    $(document).on('submit', '#mycatalog', function(e)
+    {
+        e.preventDefault();
+        var a=document.getElementById("page").value;
+        console.log(a);
+        number_page=Number($('#page').val());
+        console.log(number_page);
+        //alert("Hello");
+        $.ajax({
+            method: "GET",
+            url: '/ajaxcatalog',
+            data:{
+                page :$('#page').val()
+            },
+            success:function(json){
+                console.log(json);
+                json=JSON.parse(json);
+                var i=0;
+                var count=0;
+                while (json[i].name)
+                {
+
+                        count++;
+
+                    i++;
+                }
+                console.log(count);
+                if (count==0)
+                {
+                      alert("page not found");
+                }
+                else
+                {
+                    var count_elem=$('.col-md-4').length;
+                    console.log(count_elem);
+                    i=0;
+                    if (count_elem!=20)
+                    {
+                        console.log("Добавляем");
+                        for (i=0; i<20-count_elem; i++)
+                        {
+                            $(".col-md-4").eq(0).clone().appendTo(".row");
+                        }
+                    }
+                    for (i=0; i<count; i++)
+                    {
+                        $('.name').eq(i).text(json[i].name);
+                        $('.description').eq(i).text(json[i].description);
+                        $('.id').eq(i).text(json[i].id);
+                        for (var j=count; j<json.length; j++)
+                        {
+                            if (json[i].category_id==json[j].id )
+                            {
+                                $('.category').eq(i).text(json[j].category);
+                            }
+                        }
+
+                        $('.num-comments').eq(i).text(json[i].num_comments);
+
+                    }
+                    if (count!=20)
+                    {//Нужно удалять элементы с конца
+                        for (i=19; i>=count; i--)
+                        {
+                            if ($(".col-md-4").eq(i).remove())
+                            {
+                                console.log("Удаляем элемент"+i);
+                            }
+
+                            //$(".col-md-4").eq(i).remove();
+                        }
+                        //$(".col-md-4").eq(2).remove();
+
+                    }
+                }
+
+
+            }
+        })
+    });
+    $(document).on('click', '#right', function(e)
+    {
+        e.preventDefault();
+        number_page+=1;
+        $('#page').val(number_page);
+        var a=document.getElementById("page").value;
+        console.log(a);
+        console.log(number_page);
+        //alert("Hello");
+        $.ajax({
+            method: "GET",
+            url: '/ajaxcatalog',
+            data:{
+                page : number_page
+            },
+            success:function(json){
+                console.log(json);
+                json=JSON.parse(json);
+                var i=0;
+                var count=0;
+                while (json[i].name)
+                {
+
+                        count++;
+
+                    i++;
+                }
+                console.log(count);
+                if (count==0)
+                {
+                      alert("page not found");
+                }
+                else
+                {
+                    var count_elem=$('.col-md-4').length;
+                    console.log(count_elem);
+                    i=0;
+                    if (count_elem!=20)
+                    {
+                        console.log("Добавляем");
+                        for (i=0; i<20-count_elem; i++)
+                        {
+                            $(".col-md-4").eq(0).clone().appendTo(".row");
+                        }
+                    }
+                    for (i=0; i<count; i++)
+                    {
+                        $('.name').eq(i).text(json[i].name);
+                        $('.description').eq(i).text(json[i].description);
+                        $('.id').eq(i).text(json[i].id);
+                        for (var j=count; j<json.length; j++)
+                        {
+                            if (json[i].category_id==json[j].id )
+                            {
+                                $('.category').eq(i).text(json[j].category);
+                            }
+                        }
+
+                        $('.num-comments').eq(i).text(json[i].num_comments);
+
+                    }
+                    if (count!=20)
+                    {//Нужно удалять элементы с конца
+                        for (i=19; i>=count; i--)
+                        {
+                            if ($(".col-md-4").eq(i).remove())
+                            {
+                                console.log("Удаляем элемент"+i);
+                            }
+
+                            //$(".col-md-4").eq(i).remove();
+                        }
+                        //$(".col-md-4").eq(2).remove();
+
+                    }
+                }
+
+
+            }
+        })
+    });
+    $(document).on('click', '#left', function(e)
+    {
+       if (number_page>1)
+        {
+        e.preventDefault();
+        number_page-=1;
+        $('#page').val(number_page);
+        console.log(number_page);
+        var a=document.getElementById("page").value;
+        console.log(a);
+        //alert("Hello");
+        $.ajax({
+            method: "GET",
+            url: '/ajaxcatalog',
+            data:{
+                page : number_page
+            },
+            success:function(json){
+                console.log(json);
+                json=JSON.parse(json);
+                var i=0;
+                var count=0;
+                while (json[i].name)
+                {
+
+                        count++;
+
+                    i++;
+                }
+                console.log(count);
+                if (count==0)
+                {
+                      alert("page not found");
+                }
+                else
+                {
+                    var count_elem=$('.col-md-4').length;
+                    console.log(count_elem);
+                    i=0;
+                    if (count_elem!=20)
+                    {
+                        console.log("Добавляем");
+                        for (i=0; i<20-count_elem; i++)
+                        {
+                            $(".col-md-4").eq(0).clone().appendTo(".row");
+                        }
+                    }
+                    for (i=0; i<count; i++)
+                    {
+                        $('.name').eq(i).text(json[i].name);
+                        $('.description').eq(i).text(json[i].description);
+                        $('.id').eq(i).text(json[i].id);
+                        for (var j=count; j<json.length; j++)
+                        {
+                            if (json[i].category_id==json[j].id )
+                            {
+                                $('.category').eq(i).text(json[j].category);
+                            }
+                        }
+
+                        $('.num-comments').eq(i).text(json[i].num_comments);
+
+                    }
+                    if (count!=20)
+                    {//Нужно удалять элементы с конца
+                        for (i=19; i>=count; i--)
+                        {
+                            if ($(".col-md-4").eq(i).remove())
+                            {
+                                console.log("Удаляем элемент"+i);
+                            }
+
+                            //$(".col-md-4").eq(i).remove();
+                        }
+                        //$(".col-md-4").eq(2).remove();
+
+                    }
+                }
+
+
+            }
+        })
+        }
+        else
+        {
+            alert("Page not found");
+        }
+    });
+
+
+</script>
+
+
+{%include 'myapp/some_base_product.html'%}
+{% endblock %}

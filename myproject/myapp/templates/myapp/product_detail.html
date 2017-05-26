@@ -1,0 +1,51 @@
+
+<div id="{{product.id}}"class="col-md-4">
+
+<h1 class="name">{{product.name}}</h1>
+<label>Описание товара   </label><p class="description">{{product.description}}</p>
+<label>Id продукта   </label><p class="id">{{product.id}}</p>
+<label>Категория продукта   </label><p class="category">{{product.category.category}}</p>
+
+    <ul id="comment">
+        {% for comment in comments%}
+        <li>
+
+                    <em>Комментарий {{comment.pk}}</em>
+                    <strong>{{comment.content}}</strong>
+
+        </li>
+        {%endfor%}
+    </ul>
+    <p><a href="{% url 'product_detail' product.id %}">Информация</a></p>
+
+{% if user.is_authenticated %}
+     <form id ="addcart{{product.id}}" action="{% url 'ajaxbuy' product.id %}" method="POST">
+                    <input class="btn btn-primary btn-lg" type="submit" value="Добавить в корзину">
+     </form>
+    <script>
+                    $(document).on('submit', '#addcart{{product.id}}', function(e)
+                    {
+                        e.preventDefault();
+                        console.log("Hello");
+                        $.ajax({
+                            type : "POST",
+                            url: "{% url 'ajaxbuy' product.id %}" ,
+                            data:{},
+                            success:function(json){
+                                console.log(json);
+                                        /*json=JSON.parse(json);
+                                        $('#fn').text(json[1].first_name);
+                                        $('#ln').text(json[1].last_name);
+                                        $('#em').text(json[1].email);
+                                        $('#pn').text(json[0].phone);*/
+
+
+                            }
+                        })
+                    });
+    </script>
+
+{% endif %}
+    <p> Количество комментариев</p>>
+<p class="num-comments">{{product.num_comments}}</p>
+</div>

@@ -1,0 +1,41 @@
+{% extends 'myapp/index.html' %}
+{% block content %}
+<br> <br>
+    {%include 'myapp/product_detail.html'%}
+    <br>
+    <br>
+    {% if user.is_authenticated %}
+                 <form id ="comprod" action="{% url 'addcomment' product.id%}" method="POST">
+                    <input id="text" type="text" name="q">
+                    <input class="btn btn-primary btn-lg" type="submit" value="Add comment">
+                </form>
+                <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+                <script>
+                    $(document).on('submit', '#comprod', function(e)
+                    {
+                        e.preventDefault();
+                        var a=document.getElementById("text").value;
+                        console.log(a);
+                        $.ajax({
+                            type : "POST",
+                            url: "{% url 'ajaxaddcomment' product.id%}" ,
+                            data:{
+                                q :$('#text').val()
+                            },
+                            success:function(json){
+                                console.log(json);
+                                json=JSON.parse(json);
+
+                            $("#comment").empty()
+                            for(var i=json.length-1; i>=0; i--){
+                                    $("#comment").prepend("<li><em>Комментарий "+json[i].id+"</em> - <strong> "+json[i].content+"</strong></li>");
+                            }
+                            }
+                        })
+                    });
+                </script>
+
+
+
+    {% endif %}
+{% endblock %}

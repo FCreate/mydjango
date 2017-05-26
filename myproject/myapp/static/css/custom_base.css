@@ -1,0 +1,9 @@
+.jumbotron {
+  display: flex;
+}
+
+.container {
+
+
+  margin: auto;  /* Магия! */
+}

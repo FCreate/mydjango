@@ -1,0 +1,14 @@
+{% extends 'myapp/index.html' %}
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+
+    <label>Your id is {{str}}</label><Br>
+             <button>
+                        <a href='/'>Main</a>
+
+                    </button>
+  </form>
+{% endblock %}1

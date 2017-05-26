@@ -1,0 +1,14 @@
+{% extends 'myapp/index.html' %}
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+
+    <label>Вы успешно вышли</label><Br>
+             <button>
+                        <a href='/'>Main</a>
+
+                    </button>
+  </form>
+{% endblock %}

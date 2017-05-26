@@ -1,0 +1,64 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<br>
+<br>
+<br>
+
+<div id="formreg">
+    <form id="register-form" action="/register_buyer/" method="POST">
+        {% csrf_token %}
+        <label>Username  </label><input id="username" type="text" name="username" required><br><br>
+        <label>Password  </label><input id="pwd" type="password" name="pwd" required><br><br>
+        <label>First name  </label><input id="first_name" type="text" name="first_name" required><br><br>
+        <label>Last name  </label><input id="last_name" type="text" name="last_name" required><br><br>
+        <label>Email  </label><input id="email" type="email" name="email" required><br><br>
+        <label>Phone  </label><input pattern=".{9,}" id="phone" type="number" maxlength="9" name="phone" required><br><br>
+        <label>City  </label><input id="city" type="text" name="city" required><br><br>
+        <label>Street  </label><input id="street" type="text" name="street" required><br><br>
+        <label>House  </label><input id="house" type="number" maxlength="3" name="house" required><br><br>
+        <label>Apartment  </label><input id="apartment" type="number" maxlength="3" name="apartment" required><br><br>
+        <input type="submit" value="Продолжить регистрацию">
+
+    </form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+                    $(document).on('submit', '#register-form', function(e)
+                    {
+                        e.preventDefault();
+                        var a=document.getElementById("username").value;
+                        console.log(a);
+                        $.ajax({
+                            type : "POST",
+                            url: "{% url 'ajaxregister_buyer'%}" ,
+                            data:{
+                                username :$('#username').val(),
+                                pwd :$('#pwd').val(),
+                                first_name :$('#first_name').val(),
+                                last_name :$('#last_name').val(),
+                                email :$('#email').val(),
+                                phone :$('#phone').val(),
+                                city :$('#city').val(),
+                                street :$('#street').val(),
+                                house :$('#house').val(),
+                                apartment :$('#apartment').val(),
+                            },
+                            success:function(json){
+                                console.log(json);
+                                try{
+                                        json=JSON.parse(json);
+                                        $('#formreg').empty();
+                                        $('#formreg').append("<p>Вы успешно зарегестрировались </p>"+"<p>"+json[1].first_name+"</p>")
+                                 }
+                                 catch(e)
+                                 {
+
+                                    $('#formreg').append("<p>"+json+"/<p>");
+                                 }
+
+                            }
+                        })
+                    });
+                </script>
+{% endblock %}
+

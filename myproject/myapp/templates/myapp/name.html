@@ -1,0 +1,61 @@
+{% extends 'myapp/index.html' %}
+{% block content %}
+<br>
+<br>
+<br>
+
+<form id="formreg" action="/formregister/" method="post">
+    {{ form.as_p }}
+    {% if form.subject.errors %}
+    <ol>
+    {% for error in form.subject.errors %}
+        <li><strong>{{ error|escape }}</strong></li>
+    {% endfor %}
+    </ol>
+{% endif %}
+    <input type="submit" value="Submit" />
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+                    $(document).on('submit', '#formreg', function(e)
+                    {
+                        e.preventDefault();
+                        console.log("AJAX is ready");
+                        $('.errors').remove();
+                        var msg=$('#formreg').serialize();
+                        $.ajax({
+                            type : "POST",
+                            url: "{% url 'formregister'%}" ,
+                            data: msg,
+                            success:function(json){
+                                console.log(json);
+                                 try{
+                                    json=JSON.parse(json);
+                                    console.log(json);
+                                     for (var key in json)
+                                     {
+
+                                        $(("label[for=\"id_"+key+"\"]")).before("<p class=\"errors\">"+json[key]+"</p>");
+                                        //$(("#id_"+key)).before("<p>"+json[key]+"</p>");
+                                        console.log(key);
+                                     }
+
+                                    //$('#formreg').append("<p>"+json+"/<p>");
+                                 }
+                                 catch(e)
+                                 {
+
+                                    $('#formreg').remove();
+                                    $('#formreg').append("<p>Вы успешно зарегестрировались "+json+"</p>")
+
+
+                                 }
+
+
+
+                            }
+                        })
+                    });
+                </script>
+
+{% endblock %}

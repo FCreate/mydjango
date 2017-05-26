@@ -1,0 +1,40 @@
+
+.jumbotron {
+  display: flex;
+}
+
+.container {
+
+
+  margin: auto;  /* Магия! */
+}
+.jumbotron {
+    background-color: #fffec2;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #a94432;
+    font-family: 'Tillana';
+}
+
+.navbar-inverse {
+    background-color: #ccf9a9;
+    border-color: #a94432;
+}
+.jumbotron .h1, .jumbotron h1 {
+    text-align: center;
+    color: #FCA205;
+    font-family: 'Lobster';
+}
+
+.navbar-inverse .navbar-nav>li>a {
+    color: #c53939;
+}
+body {
+    background: #fffec2; /* Цвет фона */
+   }
+
+p {
+    font-family: 'Aref Ruqaa';
+    margin: 0 0 10px;
+}
